@@ -3,14 +3,7 @@ import ImageUpload from '../components/ImageUpload';
 import AnalysisResults from '../components/AnalysisResults';
 import ProcessingAnimation from '../components/ProcessingAnimation';
 import { generateAnalysisResult, preprocessImage } from '../utils/modelUtils';
-
-export interface AnalysisResult {
-  trimester: 'First' | 'Second' | 'Third';
-  confidence: number;
-  gestationalAge: string;
-  keyFeatures: string[];
-  recommendations: string[];
-}
+import type { AnalysisResult } from '../types/analysis';
 
 const AnalysisPage = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -30,14 +23,14 @@ const AnalysisPage = () => {
 
     // Simulate efficient AI processing
     try {
-      // Preprocess image (optimized)
-      await preprocessImage(new File([], 'ultrasound.jpg'));
-      
-      // Simulate model inference (reduced time for efficiency)
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      
-      // Generate realistic analysis results
-      const analysisResult = generateAnalysisResult();
+      // Preprocess image (optimized) using the uploaded image URL as key
+      await preprocessImage(uploadedImage);
+
+      // Simulate model inference (faster)
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // Generate realistic, deterministic analysis results based on the uploaded image
+      const analysisResult = generateAnalysisResult(uploadedImage);
       setResults(analysisResult);
     } catch (error) {
       console.error('Analysis failed:', error);
