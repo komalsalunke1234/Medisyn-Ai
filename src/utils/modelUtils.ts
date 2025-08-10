@@ -1,20 +1,21 @@
 // Model utility functions for PregnancyTrimesterNet
 import type { AnalysisResult } from '../types/analysis';
+import modelConfig from '../data/dataset/metadata/model_config.json';
 
 // Optimized model configuration
 export const MODEL_CONFIG = {
-  name: 'PregnancyTrimesterNet',
-  version: '2.1.0',
+  name: modelConfig.model_name,
+  version: modelConfig.version,
   architecture: 'EfficientNet-B3',
   inputSize: [512, 512, 3],
   batchSize: 16,
-  inferenceTime: 0.6, // seconds (reduced)
+  inferenceTime: parseFloat(String(modelConfig.deployment.inference_time).replace('s','')), // seconds
   memoryUsage: 384, // MB
-  accuracy: 94.7,
+  accuracy: Math.round(modelConfig.performance_metrics.overall_accuracy * 1000) / 10, // e.g., 94.7
   precision: {
-    first: 93.2,
-    second: 95.8,
-    third: 95.1
+    first: Math.round(modelConfig.performance_metrics.precision.first_trimester * 1000) / 10,
+    second: Math.round(modelConfig.performance_metrics.precision.second_trimester * 1000) / 10,
+    third: Math.round(modelConfig.performance_metrics.precision.third_trimester * 1000) / 10
   }
 };
 
@@ -33,7 +34,7 @@ export const generateAnalysisResult = (imageKey: string): AnalysisResult => {
   const scenarios = [
     {
       trimester: 'First' as const,
-      confidence: 93.2,
+      confidence: Math.round(modelConfig.performance_metrics.precision.first_trimester * 1000) / 10,
       gestationalAge: '8-10 weeks',
       keyFeatures: [
         'Crown-rump length: 18-25mm',
@@ -53,7 +54,7 @@ export const generateAnalysisResult = (imageKey: string): AnalysisResult => {
     },
     {
       trimester: 'Second' as const,
-      confidence: 95.8,
+      confidence: Math.round(modelConfig.performance_metrics.precision.second_trimester * 1000) / 10,
       gestationalAge: '20-22 weeks',
       keyFeatures: [
         'Biparietal diameter: 45-52mm',
@@ -74,7 +75,7 @@ export const generateAnalysisResult = (imageKey: string): AnalysisResult => {
     },
     {
       trimester: 'Third' as const,
-      confidence: 95.1,
+      confidence: Math.round(modelConfig.performance_metrics.precision.third_trimester * 1000) / 10,
       gestationalAge: '32-34 weeks',
       keyFeatures: [
         'Biparietal diameter: 78-85mm',
@@ -100,9 +101,9 @@ export const generateAnalysisResult = (imageKey: string): AnalysisResult => {
   const hash = hashString(key);
   const baseScenario = scenarios[hash % scenarios.length];
 
-  // ±1.25% variation, deterministic by hash
+  // ±0.5% variation, deterministic by hash
   const variationSeed = ((hash >> 3) % 1000) / 1000; // [0,1)
-  const confidenceVariation = (variationSeed - 0.5) * 2.5; // [-1.25, 1.25]
+  const confidenceVariation = (variationSeed - 0.5) * 1.0; // [-0.5, 0.5]
 
   return {
     ...baseScenario,
@@ -128,21 +129,21 @@ export const preprocessImage = async (input: File | string): Promise<boolean> =>
 
 // Model performance metrics
 export const getModelMetrics = () => ({
-  accuracy: 94.7,
+  accuracy: Math.round(modelConfig.performance_metrics.overall_accuracy * 1000) / 10,
   precision: {
-    first_trimester: 93.2,
-    second_trimester: 95.8,
-    third_trimester: 95.1
+    first_trimester: Math.round(modelConfig.performance_metrics.precision.first_trimester * 1000) / 10,
+    second_trimester: Math.round(modelConfig.performance_metrics.precision.second_trimester * 1000) / 10,
+    third_trimester: Math.round(modelConfig.performance_metrics.precision.third_trimester * 1000) / 10
   },
   recall: {
-    first_trimester: 94.1,
-    second_trimester: 94.9,
-    third_trimester: 95.8
+    first_trimester: Math.round(modelConfig.performance_metrics.recall.first_trimester * 1000) / 10,
+    second_trimester: Math.round(modelConfig.performance_metrics.recall.second_trimester * 1000) / 10,
+    third_trimester: Math.round(modelConfig.performance_metrics.recall.third_trimester * 1000) / 10
   },
-  f1Score: 94.6,
-  aucRoc: 0.989,
-  processingTime: '0.6s',
-  modelSize: '127MB'
+  f1Score: Math.round(modelConfig.performance_metrics.f1_score * 1000) / 10,
+  aucRoc: modelConfig.performance_metrics.auc_roc,
+  processingTime: modelConfig.deployment.inference_time,
+  modelSize: modelConfig.deployment.model_size
 });
 
 // Dataset statistics
