@@ -1,0 +1,66 @@
+{
+  "model_name": "PregnancyTrimesterNet",
+  "version": "2.2.0",
+  "architecture": {
+    "backbone": "EfficientNet-B3",
+    "pretrained_weights": "medical_imaging_v3",
+    "input_size": [512, 512, 3],
+    "num_classes": 3,
+    "dropout_rate": 0.2,
+    "learning_rate": 0.0001,
+    "optimization": "mixed_precision",
+    "quantization": "int8"
+  },
+  "training_config": {
+    "batch_size": 16,
+    "epochs": 120,
+    "early_stopping_patience": 15,
+    "data_augmentation": true,
+    "cross_validation_folds": 5,
+    "gradient_accumulation": 2,
+    "mixed_precision": true
+  },
+  "performance_metrics": {
+    "overall_accuracy": 0.947,
+    "precision": {
+      "first_trimester": 0.932,
+      "second_trimester": 0.958,
+      "third_trimester": 0.951
+    },
+    "recall": {
+      "first_trimester": 0.941,
+      "second_trimester": 0.949,
+      "third_trimester": 0.958
+    },
+    "f1_score": 0.946,
+    "auc_roc": 0.989,
+    "confusion_matrix": [
+      [4931, 178, 131],
+      [146, 5104, 130],
+      [107, 125, 4568]
+    ]
+  },
+  "feature_extraction": {
+    "key_features": [
+      "crown_rump_length",
+      "biparietal_diameter",
+      "head_circumference",
+      "abdominal_circumference",
+      "femur_length",
+      "gestational_sac_size",
+      "yolk_sac_presence",
+      "fetal_pole_visibility",
+      "limb_development",
+      "organ_differentiation"
+    ]
+  },
+  "deployment": {
+    "model_size": "89MB",
+    "inference_time": "0.8s",
+    "memory_usage": "384MB",
+    "gpu_required": false,
+    "supported_formats": ["DICOM", "PNG", "JPEG", "TIFF"],
+    "edge_deployment": true,
+    "mobile_optimized": true
+  }
+}

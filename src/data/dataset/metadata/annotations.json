@@ -1,0 +1,48 @@
+{
+  "dataset_info": {
+    "name": "PregnancyTrimesterNet Dataset",
+    "version": "2.1.0",
+    "total_images": 15420,
+    "creation_date": "2024-01-15",
+    "last_updated": "2024-12-15"
+  },
+  "class_distribution": {
+    "first_trimester": {
+      "count": 5240,
+      "percentage": 34.0,
+      "gestational_weeks": "6-12"
+    },
+    "second_trimester": {
+      "count": 5380,
+      "percentage": 34.9,
+      "gestational_weeks": "13-27"
+    },
+    "third_trimester": {
+      "count": 4800,
+      "percentage": 31.1,
+      "gestational_weeks": "28-40"
+    }
+  },
+  "image_specifications": {
+    "formats": ["DICOM", "PNG", "JPEG"],
+    "resolution_range": "512x512 to 1024x1024",
+    "color_depth": "8-bit grayscale, 24-bit RGB",
+    "file_size_range": "50KB to 2MB"
+  },
+  "annotations": {
+    "trimester_labels": ["first", "second", "third"],
+    "gestational_age_weeks": "numeric_range",
+    "anatomical_landmarks": [
+      "crown_rump_length",
+      "biparietal_diameter",
+      "head_circumference",
+      "abdominal_circumference",
+      "femur_length",
+      "gestational_sac",
+      "yolk_sac",
+      "fetal_pole"
+    ],
+    "quality_scores": "1-5_scale",
+    "medical_validation": "radiologist_verified"
+  }
+}

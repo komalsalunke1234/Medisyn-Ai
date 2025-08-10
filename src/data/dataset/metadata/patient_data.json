@@ -1,0 +1,35 @@
+{
+  "anonymization_info": {
+    "method": "SHA-256_hashing",
+    "patient_ids_removed": true,
+    "dates_shifted": true,
+    "locations_generalized": true
+  },
+  "demographic_data": {
+    "age_ranges": {
+      "18-25": 2840,
+      "26-30": 4120,
+      "31-35": 4680,
+      "36-40": 2980,
+      "40+": 800
+    },
+    "geographic_distribution": {
+      "north_america": 6200,
+      "europe": 4800,
+      "asia": 3420,
+      "other": 1000
+    }
+  },
+  "medical_history": {
+    "first_pregnancy": 6840,
+    "multiple_pregnancies": 8580,
+    "high_risk_pregnancies": 1240,
+    "normal_pregnancies": 14180
+  },
+  "data_sources": {
+    "hospital_systems": 12,
+    "imaging_centers": 8,
+    "research_institutions": 5,
+    "countries_represented": 15
+  }
+}
