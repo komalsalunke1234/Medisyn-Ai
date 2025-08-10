@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, Clock, User, AlertTriangle } from 'lucide-react';
-import type { AnalysisResult } from '../pages/AnalysisPage';
+import type { AnalysisResult } from '../types/analysis';
 
 interface AnalysisResultsProps {
   results: AnalysisResult;
